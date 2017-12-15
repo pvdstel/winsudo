@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sudo.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -33,13 +34,14 @@ namespace sudo
 
             if (processStartInfo == null)
             {
-                Utilities.HighlightConsole(() => Console.WriteLine("Please specify the command to execute."));
+                ConsoleUtilities.HighlightConsole(() => Console.WriteLine("Please specify the command to execute."));
+                Console.WriteLine();
+                Console.WriteLine("Usage: sudo <executable> <executable arguments>");
                 Exit();
             }
 
-            Process run = Process.Start(processStartInfo);
-            run.WaitForExit();
-            Exit(run.ExitCode);
+            int? exitCode = ProcessUtilities.RunSafe(processStartInfo, true);
+            Exit(exitCode);
         }
 
         /// <summary>
@@ -102,9 +104,9 @@ namespace sudo
         /// </summary>
         private static void Exit(int? exitCode = null)
         {
-            if (Utilities.HasOwnWindow())
+            if (ProcessUtilities.HasOwnWindow())
             {
-                Utilities.HighlightConsole(() =>
+                ConsoleUtilities.HighlightConsole(() =>
                 {
                     Console.WriteLine();
                     if (exitCode.HasValue)

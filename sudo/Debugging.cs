@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sudo.Utilities;
+using System;
 using System.Diagnostics;
 
 namespace sudo
@@ -14,7 +15,7 @@ namespace sudo
         [Conditional("DEBUG")]
         internal static void PrintDebugBuild()
         {
-            Utilities.HighlightConsole(() =>
+            ConsoleUtilities.HighlightConsole(() =>
             {
                 Console.WriteLine("This is a debug build of winsudo.");
                 Console.WriteLine(new String('-', 33));

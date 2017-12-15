@@ -1,32 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace sudo
+namespace sudo.Utilities
 {
     /// <summary>
-    /// Provides utility functions.
+    /// Provides console utilities.
     /// </summary>
-    internal static class Utilities
+    internal class ConsoleUtilities
     {
-        /// <summary>
-        /// Determines whether the current process has its own window.
-        /// </summary>
-        /// <returns>A <see cref="bool"/> value indicating whether the current process ahs its own window.</returns>
-        internal static bool HasOwnWindow()
-        {
-            return Process.GetCurrentProcess().MainWindowHandle != IntPtr.Zero;
-        }
-
         /// <summary>
         /// Highlights console output colors.
         /// </summary>
-        internal static void HighlightConsoleColors()
+        private static void HighlightConsoleColors()
         {
             Console.BackgroundColor = ConsoleColor.DarkGray;
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        /// <summary>
+        /// Highlights console output colors for errors.
+        /// </summary>
+        private static void ErrorConsoleColors()
+        {
+            Console.BackgroundColor = ConsoleColor.Red;
             Console.ForegroundColor = ConsoleColor.White;
         }
 
@@ -45,6 +44,17 @@ namespace sudo
         internal static void HighlightConsole(Action contextCallback)
         {
             HighlightConsoleColors();
+            contextCallback?.Invoke();
+            RestoreConsoleColors();
+        }
+
+        /// <summary>
+        /// Creates a context in which console colors are highlighted for errors.
+        /// </summary>
+        /// <param name="contextCallback">The callback to be executed in the highlighted context.</param>
+        internal static void ErrorConsole(Action contextCallback)
+        {
+            ErrorConsoleColors();
             contextCallback?.Invoke();
             RestoreConsoleColors();
         }
