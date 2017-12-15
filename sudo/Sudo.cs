@@ -31,7 +31,7 @@ namespace sudo
 
             if (processStartInfo == null)
             {
-                Console.WriteLine("Please specify the command to execute.");
+                Utilities.HighlightConsole(() => Console.WriteLine("Please specify the command to execute."));
                 Exit();
             }
 
@@ -75,12 +75,10 @@ namespace sudo
                 Utilities.HighlightConsole(() =>
                 {
                     Console.WriteLine();
-                    Console.Write("The administrator process has ended");
                     if (exitCode.HasValue)
                     {
-                        Console.Write($" with exit code {exitCode}");
+                        Console.WriteLine($"The administrator process has exited with exit code {exitCode}.");
                     }
-                    Console.WriteLine(".");
                     Console.WriteLine("Press any key to continue.");
                 });
                 Console.ReadKey();
