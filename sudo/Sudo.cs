@@ -27,6 +27,8 @@ namespace sudo
              */
             string[] command = Environment.GetCommandLineArgs();
 
+            CheckAdminSession(command);
+
             ProcessStartInfo processStartInfo = CreateProcessStartInfo(command);
 
             if (processStartInfo == null)
@@ -63,6 +65,36 @@ namespace sudo
                 UseShellExecute = false
             };
             return processStartInfo;
+        }
+
+        /// <summary>
+        /// Checks if an interactive terminal should be created.
+        /// </summary>
+        /// <param name="commandLineArgs">The command line arguments.</param>
+        private static void CheckAdminSession(string[] commandLineArgs)
+        {
+            if (commandLineArgs.Length != 2)
+            {
+                return;
+            }
+
+            if (commandLineArgs[1].ToLower() == "su")
+            {
+                ProcessStartInfo processStartInfo = new ProcessStartInfo("cmd");
+                processStartInfo.Verb = "runas";
+                Process.Start(processStartInfo);
+
+                Environment.Exit(0);
+            }
+
+            if (commandLineArgs[1].ToLower() == "ps")
+            {
+                ProcessStartInfo processStartInfo = new ProcessStartInfo("powershell");
+                processStartInfo.Verb = "runas";
+                Process.Start(processStartInfo);
+
+                Environment.Exit(0);
+            }
         }
 
         /// <summary>
