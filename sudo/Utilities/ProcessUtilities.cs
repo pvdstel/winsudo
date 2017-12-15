@@ -40,9 +40,10 @@ namespace sudo.Utilities
             {
                 ErrorConsole(() => Console.WriteLine("The specified executable could not be found."));
             }
-            catch (Win32Exception)
+            catch (Win32Exception ex)
             {
-                ErrorConsole(() => Console.WriteLine("There was an error executing the specified command. Maybe the command was not found, or too long."));
+                ErrorConsole(() => Console.WriteLine("There was an error executing the specified command:"));
+                Console.WriteLine(ex.Message);
             }
             catch (ArgumentNullException)
             {
