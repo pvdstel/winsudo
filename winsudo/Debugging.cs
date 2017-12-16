@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Diagnostics;
-using winsudo.sudo.Utilities;
+using winsudo.Utilities;
 
-namespace winsudo.sudo
+namespace winsudo
 {
     /// <summary>
     /// Provides debugging utilities.
     /// </summary>
-    class Debugging
+    public class Debugging
     {
         /// <summary>
         /// Informs the user that the current build is a release build.
         /// </summary>
         [Conditional("DEBUG")]
-        internal static void PrintDebugBuild()
+        public static void PrintDebugBuild()
         {
             ConsoleUtilities.HighlightConsole(() =>
             {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using winsudo.sudo.Utilities;
+using winsudo.Utilities;
 
 namespace winsudo.sudo
 {

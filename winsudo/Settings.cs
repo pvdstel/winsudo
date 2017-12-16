@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace winsudo.sudo
+namespace winsudo
 {
     /// <summary>
     /// Represents settings.

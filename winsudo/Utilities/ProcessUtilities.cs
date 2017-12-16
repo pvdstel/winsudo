@@ -4,20 +4,20 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using static winsudo.sudo.Utilities.ConsoleUtilities;
+using static winsudo.Utilities.ConsoleUtilities;
 
-namespace winsudo.sudo.Utilities
+namespace winsudo.Utilities
 {
     /// <summary>
     /// Provides process utility functions.
     /// </summary>
-    internal class ProcessUtilities
+    public class ProcessUtilities
     {
         /// <summary>
         /// Determines whether the current process has its own window.
         /// </summary>
         /// <returns>A <see cref="bool"/> value indicating whether the current process ahs its own window.</returns>
-        internal static bool HasOwnWindow()
+        public static bool HasOwnWindow()
         {
             return Process.GetCurrentProcess().MainWindowHandle != IntPtr.Zero;
         }
@@ -28,7 +28,7 @@ namespace winsudo.sudo.Utilities
         /// <param name="processStartInfo">The instance of <see cref="ProcessStartInfo"/> to use for launching the process.</param>
         /// <param name="wait">Whether the execution should block.</param>
         /// <returns>An exit code if tehre was any, or null otherwise.</returns>
-        internal static int? RunSafe(ProcessStartInfo processStartInfo, bool wait)
+        public static int? RunSafe(ProcessStartInfo processStartInfo, bool wait)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace winsudo.sudo.Utilities
         /// </summary>
         /// <param name="commandLineArgs">The command line arguments.</param>
         /// <returns>An instance of <see cref="ProcessStartInfo"/>.</returns>
-        internal static ProcessStartInfo CreateProcessStartInfo(string[] commandLineArgs)
+        public static ProcessStartInfo CreateProcessStartInfo(string[] commandLineArgs)
         {
             if (commandLineArgs.Length < 2)
             {
