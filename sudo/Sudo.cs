@@ -1,13 +1,9 @@
-﻿using sudo.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using winsudo.sudo.Utilities;
 
-namespace sudo
+namespace winsudo.sudo
 {
     /// <summary>
     /// Main class of the program.

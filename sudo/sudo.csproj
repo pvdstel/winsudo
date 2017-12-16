@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{0E5C0F91-A191-4327-A19F-C63152158314}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>sudo</RootNamespace>
+    <RootNamespace>winsudo.sudo</RootNamespace>
     <AssemblyName>sudo</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

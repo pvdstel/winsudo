@@ -1,8 +1,8 @@
-﻿using sudo.Utilities;
-using System;
+﻿using System;
 using System.Diagnostics;
+using winsudo.sudo.Utilities;
 
-namespace sudo
+namespace winsudo.sudo
 {
     /// <summary>
     /// Provides debugging utilities.
