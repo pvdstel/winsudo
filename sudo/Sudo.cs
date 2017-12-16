@@ -41,6 +41,10 @@ namespace sudo
                 Exit();
             }
 
+            if (ProcessUtilities.HasOwnWindow())
+            {
+                Console.Title = $"{ApplicationInfo.Name} - {processStartInfo.FileName} {processStartInfo.Arguments}";
+            }
             int? exitCode = ProcessUtilities.RunSafe(processStartInfo, true);
             Exit(exitCode);
         }
