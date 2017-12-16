@@ -24,6 +24,12 @@ namespace sudo.Utilities
             return Process.GetCurrentProcess().MainWindowHandle != IntPtr.Zero;
         }
 
+        /// <summary>
+        /// Runs a process safely, catching all possible errors that might occur.
+        /// </summary>
+        /// <param name="processStartInfo">The instance of <see cref="ProcessStartInfo"/> to use for launching the process.</param>
+        /// <param name="wait">Whether the execution should block.</param>
+        /// <returns>An exit code if tehre was any, or null otherwise.</returns>
         internal static int? RunSafe(ProcessStartInfo processStartInfo, bool wait)
         {
             try
@@ -53,7 +59,32 @@ namespace sudo.Utilities
             {
                 ErrorConsole(() => Console.WriteLine("An internal error occured."));
             }
-            return -1;
+            return null;
+        }
+
+        /// <summary>
+        /// Creates process start information.
+        /// </summary>
+        /// <param name="commandLineArgs">The command line arguments.</param>
+        /// <returns>An instance of <see cref="ProcessStartInfo"/>.</returns>
+        internal static ProcessStartInfo CreateProcessStartInfo(string[] commandLineArgs)
+        {
+            if (commandLineArgs.Length < 2)
+            {
+                return null;
+            }
+
+            string executable = commandLineArgs[1];
+
+            CommandEscaper commandEscaper = new CommandEscaper();
+            IEnumerable<string> escapedArguments = commandLineArgs.Skip(2).Select(a => commandEscaper.Escape(a));
+            string arguments = string.Join(" ", escapedArguments);
+
+            ProcessStartInfo processStartInfo = new ProcessStartInfo(executable, arguments)
+            {
+                UseShellExecute = false
+            };
+            return processStartInfo;
         }
     }
 }

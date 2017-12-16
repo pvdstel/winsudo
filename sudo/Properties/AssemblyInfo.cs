@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("sudo")]
+[assembly: AssemblyTitle("winsudo")]
 [assembly: AssemblyDescription("Runs programs as administrator.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("sudo")]
+[assembly: AssemblyProduct("winsudo")]
 [assembly: AssemblyCopyright("Copyright © pvdstel 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

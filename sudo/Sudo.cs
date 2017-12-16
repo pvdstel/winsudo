@@ -26,11 +26,12 @@ namespace sudo
              * executable. The second item (at 1) will be the executable to be
              * invoked. Further arguments are input to the other process.
              */
-            string[] command = Environment.GetCommandLineArgs();
+            string[] commandLineArgs = Environment.GetCommandLineArgs();
 
-            CheckAdminSession(command);
+            if (CheckHelp(commandLineArgs)) Exit();
+            if (CheckAliases(commandLineArgs)) return;
 
-            ProcessStartInfo processStartInfo = CreateProcessStartInfo(command);
+            ProcessStartInfo processStartInfo = ProcessUtilities.CreateProcessStartInfo(commandLineArgs);
 
             if (processStartInfo == null)
             {
@@ -45,63 +46,51 @@ namespace sudo
         }
 
         /// <summary>
-        /// Creates process start information.
+        /// Checks if help information should be printed.
         /// </summary>
-        /// <param name="commandLineArgs">The command line arguments.</param>
-        /// <returns>An instance of <see cref="ProcessStartInfo"/>.</returns>
-        private static ProcessStartInfo CreateProcessStartInfo(string[] commandLineArgs)
+        /// <param name="commandLineArgs"></param>
+        /// <returns></returns>
+        private static bool CheckHelp(string[] commandLineArgs)
         {
-            if (commandLineArgs.Length < 2)
+            if (commandLineArgs.Length >= 2)
             {
-                return null;
+                if (commandLineArgs[1] == "-h" || commandLineArgs[1] == "--help")
+                {
+                    ConsoleUtilities.HighlightConsole(() => Console.WriteLine($"{ApplicationInfo.Name} version {ApplicationInfo.Version}"));
+                    Console.WriteLine();
+                    Console.WriteLine("The following options can be used in winsudo:");
+                    Console.WriteLine();
+                    Settings.PrintSettings();
+                    return true;
+                }
             }
-
-            string executable = commandLineArgs[1];
-
-            CommandEscaper commandEscaper = new CommandEscaper();
-            IEnumerable<string> escapedArguments = commandLineArgs.Skip(2).Select(a => commandEscaper.Escape(a));
-            string arguments = string.Join(" ", escapedArguments);
-
-            ProcessStartInfo processStartInfo = new ProcessStartInfo(executable, arguments)
-            {
-                UseShellExecute = false
-            };
-            return processStartInfo;
+            return false;
         }
 
         /// <summary>
-        /// Checks if an interactive terminal should be created.
+        /// Checks if an alias should be launched.
         /// </summary>
         /// <param name="commandLineArgs">The command line arguments.</param>
-        private static void CheckAdminSession(string[] commandLineArgs)
+        private static bool CheckAliases(string[] commandLineArgs)
         {
-            if (commandLineArgs.Length != 2)
+            if (commandLineArgs.Length == 2)
             {
-                return;
+                Dictionary<string, string> aliases = Settings.GetAliases();
+                if (aliases.ContainsKey(commandLineArgs[1]))
+                {
+                    ProcessStartInfo processStartInfo = new ProcessStartInfo(aliases[commandLineArgs[1]]);
+                    Process.Start(processStartInfo);
+
+                    return true;
+                }
             }
-
-            if (commandLineArgs[1].ToLower() == "su")
-            {
-                ProcessStartInfo processStartInfo = new ProcessStartInfo("cmd");
-                processStartInfo.Verb = "runas";
-                Process.Start(processStartInfo);
-
-                Environment.Exit(0);
-            }
-
-            if (commandLineArgs[1].ToLower() == "ps")
-            {
-                ProcessStartInfo processStartInfo = new ProcessStartInfo("powershell");
-                processStartInfo.Verb = "runas";
-                Process.Start(processStartInfo);
-
-                Environment.Exit(0);
-            }
+            return false;
         }
 
         /// <summary>
         /// Prints an exit message and exits.
         /// </summary>
+        /// <param name="exitCode">The exit code of the administrator process. Leave null if none.</param>
         private static void Exit(int? exitCode = null)
         {
             if (ProcessUtilities.HasOwnWindow())
