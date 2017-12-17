@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-namespace sudo
+namespace winsudo
 {
     /// <summary>
     /// Represents settings.
@@ -22,9 +19,19 @@ namespace sudo
         private static readonly string AliasPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ApplicationInfo.Name, "aliases");
 
         /// <summary>
+        /// The path used for the default executable config file.
+        /// </summary>
+        private static readonly string DefaultExecutablePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ApplicationInfo.Name, "default-executable");
+
+        /// <summary>
         /// Default aliases.
         /// </summary>
         public static ReadOnlyDictionary<string, string> DefaultAliases;
+
+        /// <summary>
+        /// Default default executable.
+        /// </summary>
+        public static string DefaultDefaultExecutable = "cmd";
 
         /// <summary>
         /// Initializes static members of <see cref="Settings"/> whose initialization code is
@@ -46,6 +53,7 @@ namespace sudo
         public static void PrintSettings()
         {
             Console.WriteLine($"File used for aliases:\n{AliasPath}");
+            Console.WriteLine($"File used for default executable:\n{DefaultExecutablePath}");
         }
 
         /// <summary>
@@ -71,6 +79,24 @@ namespace sudo
                 }
             }
             return aliasFile;
+        }
+
+        /// <summary>
+        /// Gets default executable.
+        /// </summary>
+        /// <returns>A string containing the name of the default executable.</returns>
+        public static string GetDefaultExecutable()
+        {
+            string defaultExec = DefaultDefaultExecutable;
+            if (File.Exists(DefaultExecutablePath))
+            {
+                string defaultExecValue = File.ReadAllText(DefaultExecutablePath).Trim();
+                if (!string.IsNullOrEmpty(defaultExecValue))
+                {
+                    defaultExec = defaultExecValue;
+                }
+            }
+            return defaultExec;
         }
     }
 }

@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace sudo.Utilities
+namespace winsudo.Utilities
 {
     /// <summary>
     /// Provides console utilities.
     /// </summary>
-    internal class ConsoleUtilities
+    public class ConsoleUtilities
     {
         /// <summary>
         /// Highlights console output colors.
@@ -32,7 +28,7 @@ namespace sudo.Utilities
         /// <summary>
         /// Restores console output colors.
         /// </summary>
-        internal static void RestoreConsoleColors()
+        public static void RestoreConsoleColors()
         {
             Console.ResetColor();
         }
@@ -41,7 +37,7 @@ namespace sudo.Utilities
         /// Creates a context in which console colors are highlighted.
         /// </summary>
         /// <param name="contextCallback">The callback to be executed in the highlighted context.</param>
-        internal static void HighlightConsole(Action contextCallback)
+        public static void HighlightConsole(Action contextCallback)
         {
             HighlightConsoleColors();
             contextCallback?.Invoke();
@@ -52,7 +48,7 @@ namespace sudo.Utilities
         /// Creates a context in which console colors are highlighted for errors.
         /// </summary>
         /// <param name="contextCallback">The callback to be executed in the highlighted context.</param>
-        internal static void ErrorConsole(Action contextCallback)
+        public static void ErrorConsole(Action contextCallback)
         {
             ErrorConsoleColors();
             contextCallback?.Invoke();
