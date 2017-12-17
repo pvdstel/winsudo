@@ -41,8 +41,7 @@ namespace winsudo
         {
             Dictionary<string, string> defaultAliases = new Dictionary<string, string>()
             {
-                { "su", "cmd" },
-                { "-", "powershell" }
+                { "-", GetDefaultExecutable() }
             };
             DefaultAliases = new ReadOnlyDictionary<string, string>(defaultAliases);
         }
