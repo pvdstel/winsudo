@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using winsudo.Utilities;
 
 namespace winsudo.sudo
@@ -24,16 +25,16 @@ namespace winsudo.sudo
              */
             string[] commandLineArgs = Environment.GetCommandLineArgs();
 
-            if (CheckHelp(commandLineArgs)) Exit();
-            if (CheckAliases(commandLineArgs)) return;
+            if (RuntimeChecks.CheckHelp(commandLineArgs)) Exit();
+            if (RuntimeChecks.CheckAliases(commandLineArgs)) return;
 
-            ProcessStartInfo processStartInfo = ProcessUtilities.CreateProcessStartInfo(commandLineArgs);
+            ProcessStartInfo processStartInfo = CreateProcessStartInfo(commandLineArgs);
 
             if (processStartInfo == null)
             {
                 ConsoleUtilities.HighlightConsole(() => Console.WriteLine("Please specify the command to execute."));
                 Console.WriteLine();
-                Console.WriteLine("Usage: sudo <executable> <executable arguments>");
+                Console.WriteLine("Usage: sudo <executable> [<executable arguments>]");
                 Exit();
             }
 
@@ -46,45 +47,28 @@ namespace winsudo.sudo
         }
 
         /// <summary>
-        /// Checks if help information should be printed.
-        /// </summary>
-        /// <param name="commandLineArgs"></param>
-        /// <returns></returns>
-        private static bool CheckHelp(string[] commandLineArgs)
-        {
-            if (commandLineArgs.Length >= 2)
-            {
-                if (commandLineArgs[1] == "-h" || commandLineArgs[1] == "--help")
-                {
-                    ConsoleUtilities.HighlightConsole(() => Console.WriteLine($"{ApplicationInfo.Name} version {ApplicationInfo.Version}"));
-                    Console.WriteLine();
-                    Console.WriteLine("The following options can be used in winsudo:");
-                    Console.WriteLine();
-                    Settings.PrintSettings();
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Checks if an alias should be launched.
+        /// Creates process start information.
         /// </summary>
         /// <param name="commandLineArgs">The command line arguments.</param>
-        private static bool CheckAliases(string[] commandLineArgs)
+        /// <returns>An instance of <see cref="ProcessStartInfo"/>.</returns>
+        public static ProcessStartInfo CreateProcessStartInfo(string[] commandLineArgs)
         {
-            if (commandLineArgs.Length == 2)
+            if (commandLineArgs.Length < 2)
             {
-                Dictionary<string, string> aliases = Settings.GetAliases();
-                if (aliases.ContainsKey(commandLineArgs[1]))
-                {
-                    ProcessStartInfo processStartInfo = new ProcessStartInfo(aliases[commandLineArgs[1]]);
-                    Process.Start(processStartInfo);
-
-                    return true;
-                }
+                return null;
             }
-            return false;
+
+            string executable = commandLineArgs[1];
+
+            CommandEscaper commandEscaper = new CommandEscaper();
+            IEnumerable<string> escapedArguments = commandLineArgs.Skip(2).Select(a => commandEscaper.Escape(a));
+            string arguments = string.Join(" ", escapedArguments);
+
+            ProcessStartInfo processStartInfo = new ProcessStartInfo(executable, arguments)
+            {
+                UseShellExecute = false
+            };
+            return processStartInfo;
         }
 
         /// <summary>

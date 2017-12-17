@@ -17,7 +17,7 @@ namespace winsudo
         {
             ConsoleUtilities.HighlightConsole(() =>
             {
-                Console.WriteLine("This is a debug build of winsudo.");
+                Console.WriteLine($"This is a debug build of {ApplicationInfo.Name}.");
                 Console.WriteLine(new String('-', 33));
                 Console.WriteLine();
             });

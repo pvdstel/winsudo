@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("winsudo")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("su")]
+[assembly: AssemblyDescription("Elevates execution using trusted system binaries.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("winsudo")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyProduct("su")]
+[assembly: AssemblyCopyright("Copyright © pvdstel 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("65c3aef6-619f-4890-aa84-b4bbcf438bc7")]
+[assembly: Guid("bda79992-ca3f-4890-b952-81032720c557")]
 
 // Version information for an assembly consists of the following four values:
 //

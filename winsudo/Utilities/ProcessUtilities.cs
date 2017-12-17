@@ -59,30 +59,5 @@ namespace winsudo.Utilities
             }
             return null;
         }
-
-        /// <summary>
-        /// Creates process start information.
-        /// </summary>
-        /// <param name="commandLineArgs">The command line arguments.</param>
-        /// <returns>An instance of <see cref="ProcessStartInfo"/>.</returns>
-        public static ProcessStartInfo CreateProcessStartInfo(string[] commandLineArgs)
-        {
-            if (commandLineArgs.Length < 2)
-            {
-                return null;
-            }
-
-            string executable = commandLineArgs[1];
-
-            CommandEscaper commandEscaper = new CommandEscaper();
-            IEnumerable<string> escapedArguments = commandLineArgs.Skip(2).Select(a => commandEscaper.Escape(a));
-            string arguments = string.Join(" ", escapedArguments);
-
-            ProcessStartInfo processStartInfo = new ProcessStartInfo(executable, arguments)
-            {
-                UseShellExecute = false
-            };
-            return processStartInfo;
-        }
     }
 }
